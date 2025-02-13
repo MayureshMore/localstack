@@ -1,6 +1,7 @@
 import json
 import logging
 from abc import ABC, abstractmethod
+from threading import Event
 from typing import Any
 
 from botocore.client import BaseClient
@@ -53,6 +54,8 @@ class Poller(ABC):
 
         # Target processor
         self.processor = processor or NoOpsEventProcessor()
+
+        self._is_shutdown = Event()
 
     @abstractmethod
     def event_source(self) -> str:
